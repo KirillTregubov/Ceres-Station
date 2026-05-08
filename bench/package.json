@@ -1,0 +1,20 @@
+{
+  "name": "node-benchmarking",
+  "version": "0.0.1",
+  "license": "UNLICENSED",
+  "author": "Kirill Tregubov",
+  "type": "module",
+  "scripts": {
+    "format": "oxfmt",
+    "build": "tsc -p tsconfig.json",
+    "create": "node scripts/new-benchmark.ts",
+    "bench": "npm run build --silent && node --allow-natives-syntax dist/suites/bench-node-harness.js",
+    "bench:all": "npm run bench -- -- --all",
+    "bench:cpu": "npm run build --silent && node --cpu-prof --cpu-prof-dir profiles dist/suites/cpu-prof-harness.js",
+    "bench:gc": "npm run build --silent && node dist/suites/gc/harness.js",
+    "bench:gc:trace": "npm run build --silent && node --trace-gc dist/suites/gc/harness.js"
+  },
+  "devDependencies": {
+    "bench-node": "^0.14.0"
+  }
+}

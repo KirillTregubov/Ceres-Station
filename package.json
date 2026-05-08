@@ -1,0 +1,18 @@
+{
+  "name": "ceres-station",
+  "version": "0.0.1",
+  "license": "UNLICENSED",
+  "author": "Kirill Tregubov",
+  "workspaces": [
+    "bench"
+  ],
+  "type": "module",
+  "scripts": {
+    "format": "oxfmt"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.2",
+    "oxfmt": "^0.48.0",
+    "typescript": "^6.0.3"
+  }
+}

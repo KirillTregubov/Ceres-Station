@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "dist",
+
+    "target": "esnext",
+    "lib": ["ESNext"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "types": ["node"],
+    "strict": true,
+    "skipLibCheck": true,
+    "erasableSyntaxOnly": true,
+    "verbatimModuleSyntax": true,
+    // "allowImportingTsExtensions": true,
+
+    "incremental": true,
+    "tsBuildInfoFile": "../node_modules/.cache/node-benchmarking.tsconfig.tsbuildinfo",
+
+    "declaration": false,
+    "sourceMap": false,
+    "noEmitOnError": true
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["dist", "node_modules"]
+}
