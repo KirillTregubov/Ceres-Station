@@ -11,13 +11,9 @@ const fixtureDir = resolve(".tmp-v1-tests");
 const normalizeNewlines = (value: string) => value.replaceAll("\r\n", "\n");
 const normalizePath = (value: string) => resolve(value).toLowerCase();
 
-const runNode = (script: string, options?: ExecOptions) =>
-  exec(node, ["--eval", script], options);
+const runNode = (script: string, options?: ExecOptions) => exec(node, ["--eval", script], options);
 
-const waitForOutput = async (
-  stream: Readable | null,
-  expected: string,
-): Promise<string> => {
+const waitForOutput = async (stream: Readable | null, expected: string): Promise<string> => {
   expect(stream).toBeInstanceOf(Readable);
 
   stream?.setEncoding("utf8");
@@ -120,15 +116,9 @@ describe("exec", () => {
 
     expect(normalizeNewlines(result.stdout)).toBe("out-1\nout-2\n");
     expect(normalizeNewlines(result.stderr)).toBe("err-1\nerr-2\n");
-    expect(result.all).toHaveLength(
-      result.stdout.length + result.stderr.length,
-    );
-    expect(normalizeNewlines(result.all)).toEqual(
-      expect.stringContaining("out-1\n"),
-    );
-    expect(normalizeNewlines(result.all)).toEqual(
-      expect.stringContaining("err-1\n"),
-    );
+    expect(result.all).toHaveLength(result.stdout.length + result.stderr.length);
+    expect(normalizeNewlines(result.all)).toEqual(expect.stringContaining("out-1\n"));
+    expect(normalizeNewlines(result.all)).toEqual(expect.stringContaining("err-1\n"));
   });
 
   test("exposes all as a readable stream that mirrors the buffered result", async () => {
@@ -249,9 +239,7 @@ describe("exec", () => {
         cwd: fixtureDir,
       });
 
-      expect(normalizePath(result.stdout.trim())).toBe(
-        normalizePath(fixtureDir),
-      );
+      expect(normalizePath(result.stdout.trim())).toBe(normalizePath(fixtureDir));
     });
 
     test("passes the provided env through to the child process", async () => {
@@ -305,10 +293,9 @@ describe("exec", () => {
   describe("stdio option", () => {
     test("ignore drops output and exposes no readable streams", async () => {
       const subprocess = runNode(
-        [
-          "process.stdout.write('hidden stdout');",
-          "process.stderr.write('hidden stderr');",
-        ].join(""),
+        ["process.stdout.write('hidden stdout');", "process.stderr.write('hidden stderr');"].join(
+          "",
+        ),
         { stdio: "ignore" },
       );
 
@@ -340,12 +327,9 @@ describe("exec", () => {
 
   describe("process lifecycle", () => {
     test("kill terminates a running process and reports the termination", async () => {
-      const subprocess = runNode(
-        "console.log('ready'); setInterval(() => {}, 1_000);",
-        {
-          reject: false,
-        },
-      );
+      const subprocess = runNode("console.log('ready'); setInterval(() => {}, 1_000);", {
+        reject: false,
+      });
 
       await waitForOutput(subprocess.stdout, "ready");
 
@@ -360,10 +344,7 @@ describe("exec", () => {
 
     test("kill(0) checks liveness without terminating the process", async () => {
       const subprocess = runNode(
-        [
-          "console.log('ready');",
-          "setTimeout(() => process.exit(0), 25);",
-        ].join(""),
+        ["console.log('ready');", "setTimeout(() => process.exit(0), 25);"].join(""),
         { reject: false },
       );
 
@@ -392,9 +373,7 @@ describe("exec", () => {
     });
 
     test("rejects unknown commands with the native spawn error", async () => {
-      await expect(
-        exec("definitely-not-a-real-command-ceres-station"),
-      ).rejects.toMatchObject({
+      await expect(exec("definitely-not-a-real-command-ceres-station")).rejects.toMatchObject({
         code: "ENOENT",
         path: "definitely-not-a-real-command-ceres-station",
       });

@@ -15,7 +15,13 @@ async function main() {
   const startedAt = Date.now();
   const elapsed = () => `${((Date.now() - startedAt) / 1000).toFixed(1)}s`;
 
-  const subprocess = exec("node", ["--eval", childScript]);
+  const encodedScript = Buffer.from(childScript).toString("base64");
+  const evalScript = `eval(Buffer.from('${encodedScript}', 'base64').toString())`;
+  // "${process.execPath}"
+  const command = `node --eval "${evalScript}"`;
+
+  const subprocess = exec(command, [], { shell: true });
+  // const subprocess = exec("node", ["--eval", childScript]);
 
   subprocess.stdout?.setEncoding("utf8");
   subprocess.stderr?.setEncoding("utf8");
